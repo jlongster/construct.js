@@ -11,61 +11,61 @@ This depends on @Object.create@ and @prototype.constructor.name@ and I'm still r
 
 You can view examples in the @examples@ directory, but here's a taste:
 
-    // shape.js
+bc.. // shape.js
 
-    // This is the preferred structure of defining classes. Just list
-    // normal functions and tie them together into a class at the end.
+// This is the preferred structure of defining classes. Just list
+// normal functions and tie them together into a class at the end.
 
-    function Shape(x, y) {
-        this.x = x;
-        this.y = y;
-    }
+function Shape(x, y) {
+    this.x = x;
+    this.y = y;
+}
 
-    function move(dx) {
-        this.x += dx || 5;
-    }
+function move(dx) {
+    this.x += dx || 5;
+}
+
+function render() {
+    var x = this.x;
+    var y = this.y;
+    console.log("shape rendered at " + x + "," + y);
+}
+
+
+// The constructor is always the first argument
+module.exports = construct(Shape, move, render);
+
+// rect.js
+
+var Shape = require("./shape");
+
+// You can also just define classes by passing the named functions
+// inline as arguments 
+
+// Extend shape
+var Rect = Shape.extend(
+    // Named functions are great for debugging
+    function Rect(x, y, width, height) {
+        // Calling a parent's constructor
+        Shape.init(this, x, y);
+        this.w = width;
+        this.h = height;
+    },
 
     function render() {
-        var x = this.x;
-        var y = this.y;
-        console.log("shape rendered at " + x + "," + y);
+        // Calling a parent's method
+        Rect.parent.render.call(this);
+        console.log("rect rendered " + this.w + " wide " +
+                    "and " + this.h + " tall");
     }
+);
 
+var shape = Shape(10, 10);
+var rect = Rect(5, 5, 50, 50);
 
-    // The constructor is always the first argument
-    module.exports = construct(Shape, move, render);
+console.log("\nShape?", rect.isinstance(Shape)); // -> true
 
-    // rect.js
-
-    var Shape = require("./shape");
-
-    // You can also just define classes by passing the named functions
-    // inline as arguments 
-
-    // Extend shape
-    var Rect = Shape.extend(
-        // Named functions are great for debugging
-        function Rect(x, y, width, height) {
-            // Calling a parent's constructor
-            Shape.init(this, x, y);
-            this.w = width;
-            this.h = height;
-        },
-
-        function render() {
-            // Calling a parent's method
-            Rect.parent.render.call(this);
-            console.log("rect rendered " + this.w + " wide " +
-                        "and " + this.h + " tall");
-        }
-    );
-
-    var shape = Shape(10, 10);
-    var rect = Rect(5, 5, 50, 50);
-
-    console.log("\nShape?", rect.isinstance(Shape)); // -> true
-
-    // Note how the constructor is kept properly in tact, this is
-    // extremely helpful for debugging (you get back an object literally
-    // made with your constructor function)
-    console.log("\nType:", rect.constructor.name); // -> "Rect"
+// Note how the constructor is kept properly in tact, this is
+// extremely helpful for debugging (you get back an object literally
+// made with your constructor function)
+console.log("\nType:", rect.constructor.name); // -> "Rect"
