@@ -1,9 +1,9 @@
 
-h1. construct
+h1. construct.js
 
-h2. Simple sugar for establishing prototype-based inheritance
+h4. Simple sugar for establishing prototype-based inheritance
 
-@construct@ is a javascript library that makes it easy to define inheritance. It doesn't try to do anything fancy and just gives you an easy syntax for establishing prototypical inheritance.
+@construct.js@ is a javascript library that makes it easy to define inheritance. It doesn't try to do anything fancy and just gives you an easy syntax for establishing prototypical inheritance.
 
 It is debugging-friendly in that you really get back what you expect. Say you define a javascript constructor function; @construct@ gives you back an object literally made with it. This means that when you inspect it in the console, the type name is properly in tact.
 
